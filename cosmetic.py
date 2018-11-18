@@ -1,54 +1,147 @@
+####################### 1. Web Scraping
+import time
 import pandas as pd
 
 from selenium import webdriver
-chrome_path
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+
+chrome_path = "C:\\Users\jjone\Downloads\chromedriver"
+
+def scrollDown(driver, n_scroll):
+    body = driver.find_element_by_tag_name("body")
+    while n_scroll >= 0:
+        body.send_keys(Keys.PAGE_DOWN)
+        n_scroll -= 1
+    return driver
+
+
 driver = webdriver.Chrome(executable_path = chrome_path)
-driver.implicitly_wait(30)
 
-url = 'https://www.sephora.com/product/c-firma-day-serum-P400259?icid2=products%20grid:p400259:product'
+url = 'https://www.sephora.com'
 driver.get(url)
-reviews = driver.find_elements_by_class_name('css-eq4i08')
 
-driver.find_element_by_xpath('//*[@id="ratings-reviews"]/div[10]/button').click()
-reviews2 = driver.find_elements_by_class_name('css-eq4i08')
+xpath = '/html/body/div[5]/div/div/div[1]/div/div/button'
+btn = driver.find_element_by_xpath(xpath)
+btn.click()
+xpath2 = '/html/body/div[3]/div/div/div[1]/div/div/div[2]/form/div[3]/div/div[1]/button'
+btn = driver.find_element_by_xpath(xpath2)
+btn.click()
 
-reviews = reviews.append(reviews2)
-for review in reviews:
-    print(review.text)
+# initiate empty dataframe
+df = pd.DataFrame(columns=['Label', 'URL'])
+print(df)
 
-type = ['skin-care-solutions']
-url = 'https://www.sephora.com/shop/' + type + '?pageSize=300'
-driver.get(url)
-page = WebDriverWait(driver, 10).until(EC.presence_of_elements_located())
-item_pages = page.find_all('href')
+# step 1
+tickers = ['moisturizing-cream-oils-mists', 'cleanser', 'facial-treatments', 'face-mask',
+           'eye-treatment-dark-circle-treatment', 'sunscreen-sun-protection']
 
-# 2nd page click
-driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/button[3]').click()
+for ticker in tickers:
+    url = 'https://www.sephora.com/shop/' + ticker + '?pageSize=300'
+    driver.get(url)
+
+    xpath = '/html/body/div[5]/div/div/div[1]/div/div/button'
+    btn = driver.find_element_by_xpath(xpath)
+    btn.click()
+    time.sleep(20)
+
+    browser = scrollDown(driver, 10)
+    time.sleep(10)
+
+    browser = scrollDown(driver, 10)
+    time.sleep(10)
+
+    browser = scrollDown(driver, 10)
+    time.sleep(10)
+
+    browser = scrollDown(driver, 10)
+
+    element = driver.find_elements_by_class_name('css-ix8km1')
+
+    subpageURL = []
+    for a in element:
+        subURL = a.get_attribute('href')
+        subpageURL.append(subURL)
+
+    # transform into a data frame
+    dic = {'Label': ticker, 'URL': subpageURL}
+    df = df.append(pd.DataFrame(dic), ignore_index = True)
+
+# add columns
+df2 = pd.DataFrame(columns=['brand', 'name', 'price', 'rank', 'skin_type', 'ingredients'])
+df = pd.concat([df, df2], axis = 1)
+
+# step 2
+import re
+
+for i in range(len(df)+1):
+    url = df.URL[i]
+    driver.get(url)
+    time.sleep(5)
+    
+    xpath = '/html/body/div[5]/div/div/div[1]/div/div/button'
+    btn = driver.find_element_by_xpath(xpath)
+    btn.click()
+
+    # brand, name, price
+    df.brand[i] = driver.find_element_by_class_name('css-avdj50').text
+    df.name[i] = driver.find_element_by_class_name('css-r4ddnb ').text
+    df.price[i] = driver.find_element_by_class_name('css-n8yjg7 ').text
+    
+    browser = scrollDown(driver, 1)
+    time.sleep(5)
+    browser = scrollDown(driver, 1)
+    time.sleep(5)
+
+    # skin_type
+    detail = driver.find_element_by_class_name('css-192qj50').text
+    pattern = r"✔ \w+\n"
+    df.skin_type[i] = re.findall(pattern, detail)
+
+    # ingredients
+    xpath = '//*[@id="tab2"]'
+    btn = driver.find_element_by_xpath(xpath)
+    btn.click()
+
+    try: 
+        df.ingredients[i] = driver.find_element_by_xpath('//*[@id="tabpanel2"]/div').text
+    except NoSuchElementException:
+        df.ingredients[i] = 'No Info'
+        
+    # rank
+    try:
+        rank = driver.find_element_by_class_name('css-ffj77u').text  
+        rank = re.match('\d.\d', rank).group() 
+        df['rank'][i] = str(rank)
+        
+    except NoSuchElementException:
+        df['rank'][i] = 0
+    
+    print(i)    # just for verbose
+
+
+df.to_csv('cosmetic.csv', encoding = 'utf-8-sig', index = False)
+
+cosmetic = pd.read_csv('cosmetic.csv')
+
+####################### 2. Cleaning data
+from nltk.tokenize import word_tokenize
+tokens = word_tokenize()
+
+
+
+
+####################### 3. Exploratory Data Anaylsis
 
 
 
 
 
+####################### 4. Clustering
 
-from sklearn.decomposition import NMF
-from sklearn.preprocessing import Normalizer, MaxAbsScaler
-from sklearn.pipeline import make_pipeline
 
-# Create a MaxAbsScaler: scaler
-scaler = MaxAbsScaler()
-# Create an NMF model: nmf
-nmf = NMF(n_components = 20)
-# Create a Normalizer: normalizer
-normalizer = Normalizer()
-# Create a pipeline: pipeline
-pipeline = make_pipeline(scaler, nmf, normalizer)
-# Apply fit_transform to artists: norm_features
-norm_features = pipeline.fit_transform(items)
-# Create a DataFrame: df
-df = pd.DataFrame(norm_features, index = item_names)
-# Select row of 'Bruce Springsteen': artist
-artist = df.loc['Water Bomb']
-# Compute cosine similarities of the item between the itmes
-similarities = df.dot(itmes)
-# Display those with highest cosine similarity
-print(similarities.nlargest())
+
+
+
+####################### 5. recommendation Engine

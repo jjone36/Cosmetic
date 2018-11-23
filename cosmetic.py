@@ -163,63 +163,37 @@ for i in range(len(cosm)):
 
 ## list column dummies
 df_2 = cosm['skin_type'].str.join('|').str.get_dummies().add_prefix('type_')
-cosm_dummy = cosm.join(df_2).drop('skin_type', axis = 1)
+cosm_2 = cosm.join(df_2).drop('skin_type', axis = 1)
 
 
 # ingredients
-pattern = "^-(\w|:|\s|,|.)+\r\n\r\n"
-pattern = "^-[:print:]+\r\n\r\n"
+a = [t.split('\r\n\r\n') for t in cosm['ingredients']]
+pattern = ['\r\n', '-\w+: ', 'Please', 'No Info', 'This product', 'Visit']
 
-a = re.sub(pattern, " ", a)
-b = pattern.search(a)
-b.group()
-
-b = []
-for i in range(5):
-    b = re.sub(pattern, "", cosm['ingredients'][i])
+for i in range(len(cosm)):
+    Num = len(a[i])
+    for j in range(Num):
+        if all(x not in a[i][j] for x in pattern):
+           cosm_2['ingredients'][i] = a[i][j]
 
 
 ####################### 3. Exploratory Data Anaylsis
 # 1. Label -> item type
-
-
-
-
 # 2. rank distributions
-
-
-
-
-
-
 # 3. skin_type & counts, items, rank...
-
-
-
-
-
-
-
-
-
 
 ####################### 4. Clustering
 from nltk.tokenize import regexp_tokenize
-
-regexp_tokenize(', ')
-
-pattern = re.compile(r"^-(\w|:|\s|,|.)+\r\n\r\n")
 
 word_index_map = {}
 index_word_map = []
 current_index = 0
 corpus = []
-all_ingredients = []
 
-for i in range(len(cosm)):
-    text = re.sub(pattern, "", cosm['ingredients'][i])
+for i in range(len(cosm_2)):
+    text = cosm_2['ingredients'][i]
     text = text.lower()
-    tokens = regexp_tokenize(', ')
+    tokens = text.split(', ')
     corpus.append(tokens)
     for token in tokens:
         if token not in word_index_map:
@@ -227,8 +201,11 @@ for i in range(len(cosm)):
             current_index += 1
             index_word_map.append(token)
 
-index_word_map[426]
-word_index_map['']
+word_index_map['water']
+
+D = len(corpus)   # number of documents
+N = len(word_index_map)   # total number of tokens
+X = np.zeros((N, D))   
 
 def tokens_to_vector(tokens):
     # initialize empty array
@@ -239,10 +216,49 @@ def tokens_to_vector(tokens):
         x[i] = 1
     return x
 
+# document-term matrix
+i = 0
 for tokens in corpus:
     X[:, i] = tokens_to_vector(tokens)
     i += 1
 
+index_word_map[25]
+
+
+import matplotlib.pyplot as plt
+
+# Decomposition
+from sklearn.decomposition import TruncatedSVD
+svd = TruncatedSVD()
+Z = svd.fit_transform(X)
+
+import matplotlib.pyplot as plt
+plt.scatter(Z[:, 0], Z[:, 1])
+for i in range(D):
+    plt.annotate(s = index_word_map[i], xy = (Z[i, 0], Z[i, 1]))
+plt.show()
+
+p = figure(x_axis_label = 'x_axis', y_axis_label = 'y_axis')
+p.circle(Z[:, 0], Z[:, 1])
+output_file('cosm.html')
+show(p)
+
+# t-SNE => 2D
+from sklearn.manifold import TSNE
+model = TSNE(learning_rate = 200)
+tsne_features = model.fit_transform(X)
+x = tsne_features[:, 0]
+y = tsne_features[:, 1]
+plt.scatter(x, y)
+plt.show()
+
+from bokeh.plotting import figure
+from bokeh.io import output_file, show
+
+p = figure(x_axis_label = 'x_axis', y_axis_label = 'y_axis')
+p.circle(x, y)
+output_file('cosm.html')
+show(p)
 
 
 ####################### 5. recommendation Engine

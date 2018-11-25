@@ -10,10 +10,10 @@ Created on Sun Nov 25 12:01:08 2018
 
 
 import pandas as pd
-
-from bokeh.io import output_file, show, curdoc
+from bokeh.io import show, curdoc
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource, HoverTool, Select
+from bokeh.models import ColumnDataSource, HoverTool
+from bokeh.models.widgets import Select 
 from bokeh.layouts import widgetbox, column
 
 
@@ -21,7 +21,6 @@ df = pd.read_csv('cosmetic_svd.csv')
 
 option_1 = ['Moisturizer', 'Cleanser', 'Treatment', 'Face Mask', 'Eye cream', 'Sun protect']
 option_2 = ['Combination', 'Dry', 'Normal', 'Oily', 'Sensitive']
-
 
 source = ColumnDataSource(df)
 plot = figure()
@@ -38,10 +37,11 @@ plot.add_tools(hover)
 def update_plot(attr, old, new):
     a = select_1.value
     b = select_2.value
-    a_b = a + '_' + b
+    a_b = str(a) + '_' + str(b)
+
     new_data = {
-        'x' : df[df['Label'] == a_b]['SVD1'],
-        'y' : df[df['Label'] == a_b]['SVD2'],
+        'SVD1' : df[df['Label'] == a_b]['SVD1'],
+        'SVD2' : df[df['Label'] == a_b]['SVD2'],       
         'name' : df[df['Label'] == a_b]['name'],
         'brand' : df[df['Label'] == a_b]['brand'],
         'price' : df[df['Label'] == a_b]['price'],
@@ -58,6 +58,7 @@ select_2.on_change('value', update_plot)
 
 layout = column(widgetbox(select_1, select_2), plot)
 curdoc().add_root(layout)
-curdoc().title = 'CosmeticMap'
+curdoc().title = 'Cosmetic_Map'
+show(plot)
 
 # 4. Adding a searching widget

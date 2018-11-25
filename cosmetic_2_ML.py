@@ -69,12 +69,14 @@ for i in range(len(cosm)):
 
 # step 2. tokenizing ingredients
 cosm_2.head()
+
+cosm_2.Label.unique().tolist()
 cosm_2.columns[6:]
 
 ## types: 'Combination', 'Dry', 'Full', 'Light', 'Matte', 'Medium',
 ##        'Natural', 'Normal', 'Oily', 'Radiant', 'Sensitive'
 
-df = cosm_2[cosm_2['Label'] == 'cleanser'][cosm_2['Oily'] == 1]
+df = cosm_2[cosm_2['Label'] == 'Moisturizer'][cosm_2['Combination'] == 1]
 df = df.reset_index()
 
 word_index_map = {}
@@ -132,8 +134,6 @@ plt.show()
 Z_df = pd.DataFrame(data = Z, columns = ['SVD1', 'SVD2'])
 cosm_svd = pd.concat([df.iloc[:, 1:6], Z_df], axis = 1)
 
-cosm_svd['rank'].head()
-
 
 from bokeh.plotting import figure, ColumnDataSource
 from bokeh.io import output_file, show
@@ -142,7 +142,7 @@ from bokeh.models import HoverTool
 source = ColumnDataSource(cosm_svd)
 
 p = figure()
-p.circle(x = 'SVD1', y = 'SVD2', source = source, size = 8, color = 'salmon')
+p.circle(x = 'SVD1', y = 'SVD2', source = source, size = 8, color = 'DarkMagenta')
 
 hover = HoverTool(tooltips = [
         ('Item', '@name'),
@@ -153,3 +153,71 @@ hover = HoverTool(tooltips = [
 p.add_tools(hover)
 
 show(p)
+
+
+# step 4. Bokeh app 
+## defining a function embedding ingredients and decomposition at once
+def my_type(label, skin_type):
+    ''' Define a function creating a dataframe for each option '''
+    df = cosm_2[cosm_2['Label'] == label][cosm_2[skin_type] == 1]
+    df = df.reset_index()
+
+    # embedding each ingredients
+    word_index_map = {}
+    index_word_map = []
+    current_index = 0
+    corpus = []
+
+    for i in range(len(df)):
+        text = df['ingredients'][i]
+        text = text.lower()
+        tokens = text.split(', ')
+        corpus.append(tokens)
+        for token in tokens:
+            if token not in word_index_map:
+                word_index_map[token] = current_index
+                current_index += 1
+                index_word_map.append(token)
+
+    # creating dtm matrix
+    D = len(corpus)   # number of items
+    N = len(word_index_map)   # total number of ingredients
+    X = np.zeros((D, N))
+
+    def tokens_to_vector(tokens):
+        # initialize empty array
+        x = np.zeros(len(word_index_map))
+        # vectorize
+        for token in tokens:
+            i = word_index_map[token]
+            x[i] = 1
+        return x
+
+    i = 0
+    for tokens in corpus:
+        X[i, :] = tokens_to_vector(tokens)
+        i += 1
+
+    # decomposition using SVD
+    svd = TruncatedSVD()
+    Z = svd.fit_transform(X)
+
+    # conbining into one data frame
+    Z_df = pd.DataFrame(data = Z, columns = ['SVD1', 'SVD2'])
+    cosm_svd = pd.concat([df.iloc[:, 1:6], Z_df], axis = 1)
+    return cosm_svd
+
+
+## getting the dataframe for all combinations
+option_1 = cosm_2.Label.unique().tolist()
+option_2 = cosm_2.drop(['Full', 'Light', 'Matte', 'Medium', 'Radiant', 'Natural'], axis = 1).columns[6:].tolist()
+
+df = pd.DataFrame()
+for label in option_1:
+    for skin_type in option_2:
+            a = my_type(label, skin_type)
+            a['Label'] = label + '_' + skin_type
+            df = pd.concat([df, a], axis = 0)
+
+
+df.to_csv('cosmetic_svd.csv', encoding = 'utf-8-sig', index = False)

@@ -1,3 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov 25 00:19:42 2018
+
+@author: jjone
+"""
+
+# This is the practice scrpit for web scraping with selenium
+# It covers extracting data of item lists, item info and reviews on Sephora
+# To see the actual project I built, please go to the file 'cosmetic_1_scraping.py'
+
 import time
 import pandas as pd
 
@@ -87,30 +98,3 @@ reviews = driver.find_elements_by_class_name('css-eq4i08')
 
 for post in reviews:
     print(post.text)
-
-
-
-
-
-from sklearn.decomposition import NMF
-from sklearn.preprocessing import Normalizer, MaxAbsScaler
-from sklearn.pipeline import make_pipeline
-
-# Create a MaxAbsScaler: scaler
-scaler = MaxAbsScaler()
-# Create an NMF model: nmf
-nmf = NMF(n_components = 20)
-# Create a Normalizer: normalizer
-normalizer = Normalizer()
-# Create a pipeline: pipeline
-pipeline = make_pipeline(scaler, nmf, normalizer)
-# Apply fit_transform to artists: norm_features
-norm_features = pipeline.fit_transform(items)
-# Create a DataFrame: df
-df = pd.DataFrame(norm_features, index = item_names)
-# Select row of 'Bruce Springsteen': artist
-artist = df.loc['Water Bomb']
-# Compute cosine similarities of the item between the itmes
-similarities = df.dot(itmes)
-# Display those with highest cosine similarity
-print(similarities.nlargest())

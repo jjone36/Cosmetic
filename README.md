@@ -1,5 +1,5 @@
 # Cosmetic Recommendation
-## : *Mapping cosmetic items based on their ingredients similarities* 
+### : *Mapping cosmetic items based on their ingredients similarities* 
  
 * **Applied skills:** Web scraping with selenium. Text maniputlation and tokenization of NLP. Dimension reduction with SVD for getting the similarities of chemical composition. Visualization with Bokeh library 
 * **Publication:** (TBU) 

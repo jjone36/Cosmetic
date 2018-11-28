@@ -8,3 +8,4 @@
 * **cosmetic_map.jupyter:** Visualizing the map with bokeh on jupyter notebook
 * **cosmetic_1_scraping.py:** Web scraping cosmetic data from Sephora
 * **cosmetic_2_ML.py:** Cleaning data and tokenizing the ingredients from item descriptions. Visualizing the item map with the dimensional reduction technique. Defining a function for all this previous process and making an interactive bokeh app for a cosmetic recommendation
+* **Sephora_scraping_ex.py:** exercise code for scraping data from sephora with selenium

@@ -3,8 +3,7 @@
 
 * **Applied skills:** Web scraping with selenium. Text maniputlation and tokenization of NLP. Dimension reduction with SVD for getting the cosine similarity of chemical composition. Visualization with Bokeh library
 
-* **Publication:** "For Your Skin Beauty: Mapping Cosmetic Items with Bokeh", Nov 28. 2018, Medium 
-+ URL: https://towardsdatascience.com/for-your-skin-beauty-mapping-cosmetic-items-with-bokeh-af7523ca68e5
+* **Publication:** "For Your Skin Beauty: Mapping Cosmetic Items with Bokeh", Nov 28. 2018, Medium (URL: https://towardsdatascience.com/for-your-skin-beauty-mapping-cosmetic-items-with-bokeh-af7523ca68e5) 
 
 * **cosmetic_map.jupyter:** Visualizing the map with bokeh on jupyter notebook
 * **cosmetic_1_scraping.py:** Web scraping cosmetic data from Sephora

@@ -14,7 +14,7 @@ So instead of just being worried about my new choice, I decided to build a simpl
 
 * **Publication:** "[For Your Skin Beauty: Mapping Cosmetic Items with Bokeh](https://towardsdatascience.com/for-your-skin-beauty-mapping-cosmetic-items-with-bokeh-af7523ca68e5)", Nov 28. 2018, Medium
 
-👉 ***Note: This project is also selected as online project tutorial on [DataCamp](https://www.datacamp.com/projects). Stay tuned for the finalized product!***
+👉 ***Note: This project is selected as an online project tutorial on [DataCamp](https://www.datacamp.com/projects). Stay tuned for the finalized product!***
 
 <br>
 

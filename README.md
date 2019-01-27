@@ -1,5 +1,5 @@
 # Cosmetic Recommendation System
-: *Mapping cosmetic items based on their ingredients similarities and giving content-based filtering recommendation*
+ *Mapping cosmetic items based on their ingredients similarities and giving content-based filtering recommendation*
 
 <br>
 

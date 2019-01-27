@@ -16,7 +16,7 @@ So instead of just being worried about my new choice, I decided to build a simpl
 👉 ***Note: This project is also selected as online project tutorial on [DataCamp](https://www.datacamp.com/projects). Stay tuned for the finalized product!***
 
 
-## ***2. File Details ***
+## ***2. File Details***
 - **[cosmetic_map.jupyter](https://github.com/jjone36/Cosmetic/blob/master/cosmtic_map.ipynb)** : Visualizing the map with bokeh on jupyter notebook
 - **[cosmetic_1_scraping.py](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_1_scraping.py)** : Web scraping cosmetic data from Sephora
 - **[cosmetic_2_ML.py](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_2_ML.py)** : Cleaning data and tokenizing the ingredients from item descriptions. Visualizing the item map with the dimensional reduction technique. Defining a function for all this previous process and making an interactive bokeh app for a cosmetic recommendation
@@ -24,6 +24,7 @@ So instead of just being worried about my new choice, I decided to build a simpl
 - **[cosmetic_2.csv](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_2.csv)** : The dataset used in DataCamp project
 
 
-## ***3. What's Next? ***
+## ***3. What's Next?***
 - Gather more data and make my own database with MySQL.
 - Apply advanced models with Neural Networks
+- Create a practical Web Page/App using Flask  

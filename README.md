@@ -1,5 +1,5 @@
 # Cosmetic Recommendation System
-#### *Mapping cosmetic items based on their ingredients similarities and giving content-based filtering recommendation*
+: *Mapping cosmetic items based on their ingredients similarities and giving content-based filtering recommendation*
 
 
 ## ***For the Skin Beauty: What Can We Do for Ourselves?***
@@ -16,6 +16,7 @@ So instead of just being worried about my new choice, I decided to build a simpl
 👉 ***Note: This project is also selected as online project tutorial on [DataCamp](https://www.datacamp.com/projects). Stay tuned for the finalized product!***
 
 <br>
+
 ## ***File Details ***
 - **[cosmetic_map.jupyter](https://github.com/jjone36/Cosmetic/blob/master/cosmtic_map.ipynb)** : Visualizing the map with bokeh on jupyter notebook
 - **[cosmetic_1_scraping.py](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_1_scraping.py)** : Web scraping cosmetic data from Sephora

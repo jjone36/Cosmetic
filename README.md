@@ -10,6 +10,8 @@ Whenever I want to try a new cosmetic item, it’s so difficult for me to choose
 
 So instead of just being worried about my new choice, I decided to build a simple cosmetic recommendation on my own.
 <br>
+
+* **Project Date:** Nov, 2018
 * **Applied skills:** Web scraping with Selenium. Text mining and word embedding. Natural Language Processing. Dimension reduction with Singular Vector decomposition. Content-based Recommendation Filtering using Cosine similarities of chemical compositions. Interactive Visualization with Bokeh.
 
 * **Publication:** "[For Your Skin Beauty: Mapping Cosmetic Items with Bokeh](https://towardsdatascience.com/for-your-skin-beauty-mapping-cosmetic-items-with-bokeh-af7523ca68e5)", Nov 28. 2018, Medium

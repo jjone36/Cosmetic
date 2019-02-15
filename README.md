@@ -22,9 +22,9 @@ So instead of just being worried about my new choice, I decided to build a simpl
 
 ## ***2. File Details***
 - **[cosmetic_map.jupyter](https://github.com/jjone36/Cosmetic/blob/master/cosmtic_map.ipynb)** : Visualizing the map with bokeh on jupyter notebook
-- **[cosmetic_1_scraping.py](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_1_scraping.py)** : Web scraping cosmetic data from Sephora
+
 - **[cosmetic_2_ML.py](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_2_ML.py)** : Cleaning data and tokenizing the ingredients from item descriptions. Visualizing the item map with the dimensional reduction technique. Defining a function for all this previous process and making an interactive bokeh app for a cosmetic recommendation
-- **[Sephora_scraping_ex.py](https://github.com/jjone36/Cosmetic/blob/master/Sephora_scraping_ex.py)** : exercise code for scraping data from [Sephora](https://www.sephora.com/) with selenium
+
 - **[cosmetic_2.csv](https://github.com/jjone36/Cosmetic/blob/master/cosmetic_2.csv)** : The dataset used in DataCamp project
 
 <br>

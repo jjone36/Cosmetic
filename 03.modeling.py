@@ -11,18 +11,16 @@ Created on Sat Nov 24 19:56:54 2018
 
 import pandas as pd
 import numpy as np
-import re
-import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 
-# Define the oh_encoder function
-def oh_encoder(tokens):
-    x = np.zeros(N)
-    for ingredient in tokens:
-        # Get the index for each ingredient
-        idx = ingredient_idx[ingredient]
-        # Put 1 at the corresponding indices
-        x[idx] = 1
-    return x
+
+# Load the data
+cosm_2 = pd.read_csv('data/cosmetic_p.csv')
+
+# All possible combinations for the option choices
+option_1 = cosm_2.Label.unique().tolist()
+option_2 = cosm_2.columns[6:].tolist()
+
 
 ## defining a function embedding ingredients and decomposition at once
 def my_recommender(op_1, op_2):
@@ -35,9 +33,9 @@ def my_recommender(op_1, op_2):
     idx = 0
 
     for i in range(len(df)):
-        ingredients = df['Ingredients'][i]
-        ingredients_lower = ingredients.lower()
-        tokens = ingredients_lower.split(', ')
+        ingreds = df['ingredients'][i]
+        ingreds = ingreds.lower()
+        tokens = ingreds.split(', ')
         corpus.append(tokens)
         for ingredient in tokens:
             if ingredient not in ingredient_idx:
@@ -49,7 +47,17 @@ def my_recommender(op_1, op_2):
     N = len(ingredient_idx)     # The number of the ingredients
 
     # Initialize a matrix of zeros
-    A = np.zeros((M, N))
+    A = np.zeros(shape = (M, N))
+
+    # Define the oh_encoder function
+    def oh_encoder(tokens):
+        x = np.zeros(N)
+        for t in tokens:
+            # Get the index for each ingredient
+            idx = ingredient_idx[t]
+            # Put 1 at the corresponding indices
+            x[idx] = 1
+        return x
 
     # Make a document-term matrix
     i = 0
@@ -67,13 +75,6 @@ def my_recommender(op_1, op_2):
 
     return df
 
-
-# Load the data
-cosm_2 = pd.read_csv('data/cosmetic_p.csv')
-
-# All possible combinations for the option choices
-option_1 = cosm_2.Label.unique().tolist()
-option_2 = cosm_2.drop(['Full', 'Light', 'Matte', 'Medium', 'Radiant', 'Natural'], axis = 1).columns[6:].tolist()
 
 # Create the dataframe for all combinations
 df_all = pd.DataFrame()

@@ -6,7 +6,7 @@
 ## ***1. For the Skin Beauty: What Can We Do for Ourselves?***
 Whenever I want to try a new cosmetic item, it’s so difficult for me to choose which one will fit for me. It’s actually more than difficult. It’s sometimes scary because new items that I’ve never tried before tend to bring me skin trouble. If you have an experience like me, you could relate to this situation. We know the information we need here would be at the back of the cosmetic bottles. But.. It's really hard to get any clues from these chemistry names if you aren't a chemist.
 
-![page](https://github.com/jjone36/Cosmetic/blob/master/data/image.png)
+![page](https://github.com/jjone36/Cosmetic/blob/master/image/image.png)
 
 So instead of just being worried about my new choice, I decided to build a simple cosmetic recommendation on my own.
 <br>
@@ -29,7 +29,7 @@ So instead of just being worried about my new choice, I decided to build a simpl
 
 - **[04.Visualization.ipynb](https://github.com/jjone36/Cosmetic/blob/master/04.Visualization.ipynb)** : Visualizing the items as an interactive bokeh app with Bokeh
 
-![map](https://github.com/jjone36/Cosmetic/blob/master/data/map.gif)
+![map](https://github.com/jjone36/Cosmetic/blob/master/image/map.gif)
 
 <br>
 
